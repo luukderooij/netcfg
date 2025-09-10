@@ -1,5 +1,5 @@
 [project]
-name = "your-package-name"
+name = "netcfg"
 version = "0.1.0"  
 
 [tool.semantic_release]
