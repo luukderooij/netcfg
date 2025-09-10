@@ -1,0 +1,23 @@
+name: Release (semantic version)
+
+on:
+  push:
+    branches: [ "main" ]  # change if your default branch differs
+
+permissions:
+  contents: write   # needed to push tags and create releases
+  id-token: write   # recommended by PSR action
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for commit parsing)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python Semantic Release
+        uses: python-semantic-release/python-semantic-release@v10
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
