@@ -4,8 +4,20 @@ import ctypes
 import threading
 
 from . import core
-from .version import __version__
+#from .version import __version__
 from .changelog import CHANGELOG
+
+import importlib.metadata
+import pathlib
+import tomllib
+
+source_location = pathlib.Path(__file__).parent
+if (source_location.parent / "pyproject.toml").exists():
+    with open(source_location.parent / "pyproject.toml", "rb") as f:
+        __version__ = tomllib.load(f)['project']['version']
+else:
+    __version__ = importlib.metadata.version("netcfg")
+
 
 def is_admin():
     try:
