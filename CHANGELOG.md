@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.1.0 (2025-09-14)
+
+### Features
+
+- Add Ping functionality to GUI and implement ping command in new ping.py module
+  ([`4321dd6`](https://github.com/luukderooij/netcfg/commit/4321dd6309dac427d6c555c45bb93410881967da))
+
+- Load changelog from CHANGELOG.md instead of changelog.py
+  ([`b2eb739`](https://github.com/luukderooij/netcfg/commit/b2eb739a889abbb39c279cc21c51df479f69af8f))
+
+### Refactoring
+
+- Remove changelog.py and its import from gui.py
+  ([`740a50c`](https://github.com/luukderooij/netcfg/commit/740a50cb68d87d0e73944894d60830f0eef431cf))
+
+
 ## v1.0.1 (2025-09-11)
 
 ### Bug Fixes
