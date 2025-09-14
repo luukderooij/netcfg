@@ -9,6 +9,10 @@ import importlib.metadata
 import pathlib
 import tomllib
 
+from netcfg import ping
+
+
+
 source_location = pathlib.Path(__file__).parent
 if (source_location.parent / "pyproject.toml").exists():
     with open(source_location.parent / "pyproject.toml", "rb") as f:
@@ -121,7 +125,53 @@ def launch_gui():
     ttk.Button(btn_frame, text="Terug naar DHCP", command=action_set_dhcp).pack(side="left", padx=5)
     ttk.Button(btn_frame, text="Config opnieuw tonen", command=refresh_config).pack(side="left", padx=5)
 
-    # Tab 2: Over / Changelog
+
+
+    # Tab 2: Ping
+
+    frame_ping = ttk.Frame(notebook, padding=10)
+    notebook.add(frame_ping, text="Ping")
+
+    ttk.Label(frame_ping, text="Host/IP:").grid(row=0, column=0, sticky="w")
+    entry_host = ttk.Entry(frame_ping, width=30)
+    entry_host.grid(row=0, column=1, sticky="ew", padx=5)
+
+    ttk.Label(frame_ping, text="Aantal (pakketten):").grid(row=1, column=0, sticky="w")
+    entry_count = ttk.Entry(frame_ping, width=10)
+    entry_count.insert(0, "4")
+    entry_count.grid(row=1, column=1, sticky="w", padx=5)
+
+    text_output = tk.Text(frame_ping, height=15, wrap="word")
+    text_output.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=10)
+
+    # Make frame resizable
+    frame_ping.rowconfigure(2, weight=1)
+    frame_ping.columnconfigure(1, weight=1)
+
+    def run_ping_gui():
+        host = entry_host.get().strip()
+        if not host:
+            messagebox.showerror("Fout", "Voer een host of IP in.")
+            return
+        try:
+            count = int(entry_count.get().strip())
+        except ValueError:
+            count = 4
+
+        text_output.delete("1.0", tk.END)
+
+        def worker():
+            for line in ping.stream_ping(host, count):
+                root.after(0, lambda l=line: text_output.insert(tk.END, l + "\n"))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    ttk.Button(frame_ping, text="Ping uitvoeren", command=run_ping_gui).grid(
+        row=3, column=0, columnspan=2, pady=5
+    )
+
+
+    # Tab 3: Over / Changelog
     frame_about = ttk.Frame(notebook, padding=10)
     notebook.add(frame_about, text="Over")
 
@@ -130,7 +180,7 @@ def launch_gui():
 
     text_changelog = tk.Text(frame_about, height=15, wrap="word")
     text_changelog.pack(fill="both", expand=True)
-    # Load changelog from CHANGELOG.md instead of changelog.py
+
     changelog_path = source_location.parent / "CHANGELOG.md"
     if changelog_path.exists():
         with open(changelog_path, encoding="utf-8") as f:
@@ -140,5 +190,10 @@ def launch_gui():
         text_changelog.insert(tk.END, "Geen CHANGELOG.md gevonden.")
         text_changelog.insert(tk.END, f"📌 {version}\n   {desc}\n\n")
     text_changelog.config(state="disabled")
+
+
+
+
+
 
     root.mainloop()
