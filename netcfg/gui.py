@@ -132,7 +132,14 @@ def launch_gui():
 
     text_changelog = tk.Text(frame_about, height=15, wrap="word")
     text_changelog.pack(fill="both", expand=True)
-    for version, desc in CHANGELOG:
+    # Load changelog from CHANGELOG.md instead of changelog.py
+    changelog_path = source_location.parent / "CHANGELOG.md"
+    if changelog_path.exists():
+        with open(changelog_path, encoding="utf-8") as f:
+            changelog_content = f.read()
+        text_changelog.insert(tk.END, changelog_content)
+    else:
+        text_changelog.insert(tk.END, "Geen CHANGELOG.md gevonden.")
         text_changelog.insert(tk.END, f"📌 {version}\n   {desc}\n\n")
     text_changelog.config(state="disabled")
 
