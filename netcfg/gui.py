@@ -4,8 +4,6 @@ import ctypes
 import threading
 
 from . import core
-#from .version import __version__
-from .changelog import CHANGELOG
 
 import importlib.metadata
 import pathlib
