@@ -1,4 +1,4 @@
-from netcfg.gui import launch_gui
+from netcfg.gui.main import launch_gui
 
 if __name__ == "__main__":
     launch_gui()
