@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-09-22)
+
+### Features
+
+- Restructure GUI by creating separate tab classes and removing old gui.py
+  ([`fd28534`](https://github.com/luukderooij/netcfg/commit/fd28534a5b0cec1278cd6008a5544da349defe05))
+
+
 ## v1.1.0 (2025-09-14)
 
 ### Features
