@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.3.0 (2025-09-27)
+
+### Features
+
+- Add ARP scanning functionality with GUI integration
+  ([`f54f4c8`](https://github.com/luukderooij/netcfg/commit/f54f4c83f9376b151cc9c12a7f85548171abdd57))
+
+
 ## v1.2.0 (2025-09-22)
 
 ### Features
