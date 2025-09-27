@@ -5,6 +5,7 @@ import ctypes
 from .tabs.config_tab import ConfigTab
 from .tabs.ping_tab import PingTab
 from .tabs.about_tab import AboutTab
+from .tabs.arp_scan_tab import ArpScanTab
 
 def is_admin():
     try:
@@ -28,6 +29,7 @@ def launch_gui():
     # Tabs toevoegen
     notebook.add(ConfigTab(notebook), text="Configuratie")
     notebook.add(PingTab(notebook), text="Ping")
+    notebook.add(ArpScanTab(notebook), text="ARP Scan")
     notebook.add(AboutTab(notebook), text="Over")
 
     root.mainloop()
