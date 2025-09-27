@@ -9,6 +9,7 @@ class ConfigTab(ttk.Frame):
         super().__init__(parent, padding=10)
         self.adapter_var = tk.StringVar()
         self._build_ui()
+        self.start_auto_refresh()
 
     def _build_ui(self):
         ttk.Label(self, text="Kies netwerkadapter:").pack(anchor="w")
@@ -83,3 +84,18 @@ class ConfigTab(ttk.Frame):
     def finish_action(self):
         self.progress.stop()
         self.progress.pack_forget()
+
+
+    def start_auto_refresh(self, interval=2000):
+        """Start periodieke refresh (default elke 2 sec)."""
+        self._auto_refresh = True
+        self._refresh_loop(interval)
+
+    def stop_auto_refresh(self):
+        """Stop de automatische refresh."""
+        self._auto_refresh = False
+
+    def _refresh_loop(self, interval):
+        if self._auto_refresh:
+            self.refresh_config()
+            self.after(interval, lambda: self._refresh_loop(interval))
