@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-09-27)
+
+### Features
+
+- Implement automatic configuration refresh in ConfigTab
+  ([`b1d7761`](https://github.com/luukderooij/netcfg/commit/b1d77618c4900b57ba63c572e01e735ab760413d))
+
+
 ## v1.3.0 (2025-09-27)
 
 ### Features
