@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import webbrowser
 from typing import List, Dict
 
@@ -7,6 +8,8 @@ from scapy.all import ARP, Ether, srp, conf
 
 
 conf.verb = 0
+
+logger = logging.getLogger(__name__)  # module-level logger
 
 
 class NpcapRequiredError(RuntimeError):
@@ -28,7 +31,7 @@ class ArpScanner:
 
     The scan() method returns a list of dicts with keys: 'ip' and 'mac'.
     """
-
+    
     NPCAP_DOWNLOAD_URL = "https://npcap.com/#download"
 
     def __init__(self, open_on_fail: bool = True, verbose: bool = False) -> None:
@@ -42,6 +45,8 @@ class ArpScanner:
         self.verbose = verbose
         # Keep scapy conf.verb consistent with verbose flag
         conf.verb = 1 if self.verbose else 0
+        logger.debug("ArpScanner initialized (open_on_fail=%s, verbose=%s)",
+                     self.open_on_fail, self.verbose)
 
     def ensure_npcap(self) -> None:
         """Verify that a pcap backend is available. If not, either open the download page or raise.
@@ -49,13 +54,17 @@ class ArpScanner:
         Raises:
             NpcapRequiredError: when no pcap backend is available.
         """
+        logger.debug("Checking for pcap backend...")
         if not conf.use_pcap:
+            logger.warning("No pcap backend available (Npcap/libpcap missing).")
             if self.open_on_fail:
                 try:
+                    logger.info("Opening Npcap download page: %s", self.NPCAP_DOWNLOAD_URL)
                     webbrowser.open(self.NPCAP_DOWNLOAD_URL)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.exception("Failed to open webbrowser: %s", e)
             raise NpcapRequiredError("Npcap (or other pcap backend) is required for ARP scanning.")
+        logger.debug("pcap backend is available.")
 
     def scan(self, network_cidr: str = "192.168.1.0/24", timeout: float = 2) -> List[Dict[str, str]]:
         """Perform an ARP scan on the given CIDR and return list of found hosts.
@@ -72,8 +81,10 @@ class ArpScanner:
             ValueError: if the network_cidr parameter is empty.
         """
         if not network_cidr:
+            logger.error("Empty network_cidr parameter provided.")
             raise ValueError("network_cidr must be a non-empty string")
 
+        logger.info("Starting ARP scan on network %s with timeout=%s", network_cidr, timeout)
         self.ensure_npcap()
 
         pkt = Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst=network_cidr)
@@ -81,8 +92,11 @@ class ArpScanner:
 
         results: List[Dict[str, str]] = []
         for snd, rcv in answered:
-            results.append({"ip": rcv.psrc, "mac": rcv.hwsrc})
+            host_info = {"ip": rcv.psrc, "mac": rcv.hwsrc}
+            logger.debug("Found host: %s", host_info)
+            results.append(host_info)
 
+        logger.info("ARP scan complete. %d host(s) found.", len(results))
         return results
 
 
