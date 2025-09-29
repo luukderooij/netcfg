@@ -6,6 +6,7 @@ from typing import List, Dict
 
 from scapy.all import ARP, Ether, srp, conf
 
+from netcfg import settings
 
 conf.verb = 0
 
@@ -34,7 +35,7 @@ class ArpScanner:
     
     NPCAP_DOWNLOAD_URL = "https://npcap.com/#download"
 
-    def __init__(self, open_on_fail: bool = True, verbose: bool = False) -> None:
+    def __init__(self, open_on_fail: bool = True, verbose: bool = False, iface: str | None = None) -> None:
         """Create an ArpScanner.
 
         Args:
@@ -44,6 +45,9 @@ class ArpScanner:
         self.open_on_fail = open_on_fail
         self.verbose = verbose
         # Keep scapy conf.verb consistent with verbose flag
+        if iface:
+            print(iface)
+            conf.iface = iface
         conf.verb = 1 if self.verbose else 0
         logger.debug("ArpScanner initialized (open_on_fail=%s, verbose=%s)",
                      self.open_on_fail, self.verbose)
@@ -102,7 +106,13 @@ class ArpScanner:
 
 if __name__ == "__main__":
     # Minimal demo instead of argparse
-    scanner = ArpScanner(open_on_fail=True)
+
+    last = settings.get("last_adapter")
+    if last:
+        scanner = ArpScanner(open_on_fail=True, verbose=False, iface=last)
+    else:
+        scanner = ArpScanner(open_on_fail=True)
+        
     try:
         hosts = scanner.scan("192.168.1.0/24", timeout=2)
     except NpcapRequiredError:

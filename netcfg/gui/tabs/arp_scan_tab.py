@@ -4,7 +4,7 @@ import threading
 
 from netcfg.commands.arp_scanner import ArpScanner, NpcapRequiredError
 from mac_vendor_lookup import MacLookup, VendorNotFoundError
-
+from netcfg import settings
 
 class ArpScanTab(ttk.Frame):
     def __init__(self, parent):
@@ -94,7 +94,11 @@ class ArpScanTab(ttk.Frame):
         threading.Thread(target=self._run_scan, args=(network,), daemon=True).start()
 
     def _run_scan(self, network):
-        scanner = ArpScanner(open_on_fail=False)
+        last = settings.get("last_adapter")
+        if last:
+            scanner = ArpScanner(open_on_fail=True, verbose=False, iface=last)
+        else:
+            scanner = ArpScanner(open_on_fail=True)
         try:
             self.after(0, self._clear_tree)
             results = scanner.scan(network, timeout=2)
