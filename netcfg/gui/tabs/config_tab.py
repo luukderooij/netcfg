@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
-from netcfg import core
+from netcfg import core, settings
 
 
 class ConfigTab(ttk.Frame):
@@ -14,8 +14,21 @@ class ConfigTab(ttk.Frame):
     def _build_ui(self):
         ttk.Label(self, text="Kies netwerkadapter:").pack(anchor="w")
         adapters = core.list_adapters()
-        combo = ttk.Combobox(self, textvariable=self.adapter_var, values=adapters, state="readonly")
+        combo = ttk.Combobox(
+            self, 
+            textvariable=self.adapter_var, 
+            values=adapters, 
+            state="readonly"
+        )
         combo.pack(fill="x", pady=5)
+
+        # als er eerder een adapter was opgeslagen → selecteer die alvast
+        last = settings.get("last_adapter")
+        if last in adapters:
+            self.adapter_var.set(last)
+
+        # event: opslaan wanneer gebruiker een nieuwe kiest
+        combo.bind("<<ComboboxSelected>>", self._on_adapter_selected)
 
         self.text = tk.Text(self, height=15, wrap="word")
         self.text.pack(fill="both", expand=True)
@@ -99,3 +112,9 @@ class ConfigTab(ttk.Frame):
         if self._auto_refresh:
             self.refresh_config()
             self.after(interval, lambda: self._refresh_loop(interval))
+
+    def _on_adapter_selected(self, event=None):
+        adapter = self.adapter_var.get()
+        if adapter:
+            settings.set("last_adapter", adapter)
+            settings.save_settings()
