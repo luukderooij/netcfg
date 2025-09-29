@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-09-27)
+
+### Features
+
+- Implement automatic configuration refresh in ConfigTab
+  ([`b1d7761`](https://github.com/luukderooij/netcfg/commit/b1d77618c4900b57ba63c572e01e735ab760413d))
+
+
+## v1.3.0 (2025-09-27)
+
+### Features
+
+- Add ARP scanning functionality with GUI integration
+  ([`f54f4c8`](https://github.com/luukderooij/netcfg/commit/f54f4c83f9376b151cc9c12a7f85548171abdd57))
+
+
 ## v1.2.0 (2025-09-22)
 
 ### Features
