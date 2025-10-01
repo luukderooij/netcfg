@@ -93,12 +93,14 @@ class ArpScanTab(ttk.Frame):
 
         threading.Thread(target=self._run_scan, args=(network,), daemon=True).start()
 
+    
     def _run_scan(self, network):
         last = settings.get("last_adapter")
         if last:
-            scanner = ArpScanner(open_on_fail=True, verbose=False, iface=last)
+            scanner = ArpScanner(open_on_fail=False, verbose=False, iface=last)
         else:
-            scanner = ArpScanner(open_on_fail=True)
+            scanner = ArpScanner(open_on_fail=False)
+
         try:
             self.after(0, self._clear_tree)
             results = scanner.scan(network, timeout=2)
@@ -106,14 +108,17 @@ class ArpScanTab(ttk.Frame):
             self.after(0, lambda: self.status_var.set(f"Scan klaar: {len(results)} hosts gevonden"))
         except NpcapRequiredError:
             def handle_npcap():
-                messagebox.showerror("Fout", "Npcap (of ander pcap-backend) is vereist voor ARP-scanning.")
-                try:
-                    scanner.open_npcap_page()
-                except Exception:
+                # Toon melding met vraag
+                msg = (
+                    "Npcap (of een ander pcap-backend) is vereist voor ARP-scanning.\n\n"
+                    "Wil je de Npcap downloadpagina openen?\n\n"
+                    f"{scanner.NPCAP_DOWNLOAD_URL}"
+                )
+                if messagebox.askyesno("Npcap vereist", msg):
                     try:
-                        scanner.open_ncap_page()
-                    except Exception:
-                        pass
+                        scanner.open_on_fail_page()
+                    except Exception as e:
+                        messagebox.showerror("Fout", f"Kon de Npcap pagina niet openen:\n{e}")
             self.after(0, handle_npcap)
             self.after(0, lambda: self.status_var.set("Npcap vereist"))
         except Exception as e:

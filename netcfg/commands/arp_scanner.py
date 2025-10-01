@@ -51,6 +51,18 @@ class ArpScanner:
         conf.verb = 1 if self.verbose else 0
         logger.debug("ArpScanner initialized (open_on_fail=%s, verbose=%s)",
                      self.open_on_fail, self.verbose)
+        
+    def get_download_url(self) -> str:
+        """Get the Npcap download URL."""
+        return self.NPCAP_DOWNLOAD_URL
+        
+    def open_on_fail_page(self) -> None:
+        """Open the Npcap download page in the default web browser."""
+        try:
+            logger.info("Opening Npcap download page: %s", self.NPCAP_DOWNLOAD_URL)
+            webbrowser.open(self.NPCAP_DOWNLOAD_URL)
+        except Exception as e:
+            logger.exception("Failed to open webbrowser: %s", e)
 
     def ensure_npcap(self) -> None:
         """Verify that a pcap backend is available. If not, either open the download page or raise.
