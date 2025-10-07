@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
-from commands import ping
+from commands.ping import Pinger
 
 
 class PingTab(ttk.Frame):
@@ -29,20 +29,42 @@ class PingTab(ttk.Frame):
             row=3, column=0, columnspan=2, pady=5
         )
 
+        tk.Button(self, text="Stop", command=self.stop_ping).grid(row=3, column=0, pady=5)
+
+        self.var_infinite = tk.BooleanVar()
+        tk.Checkbutton(self, text="Oneindig pingen (-t)", variable=self.var_infinite).grid(row=4, column=0, pady=5)
+
     def run_ping(self):
         host = self.entry_host.get().strip()
         if not host:
             messagebox.showerror("Fout", "Voer een host of IP in.")
             return
+
         try:
             count = int(self.entry_count.get().strip())
         except ValueError:
             count = 4
 
+        infinite = self.var_infinite.get()  # bijvoorbeeld gekoppeld aan een checkbox
+
+        # Maak het tekstvak leeg
         self.text_output.delete("1.0", tk.END)
 
-        def worker():
-            for line in ping.stream_ping(host, count):
-                self.after(0, lambda l=line: self.text_output.insert(tk.END, l + "\n"))
+        # Maak een nieuwe Pinger aan
+        self.pinger = Pinger(host=host, count=count, infinite=infinite)
 
+        def worker():
+            for line in self.pinger.run():
+                # Regels veilig toevoegen aan GUI via main-thread
+                self.after(0, lambda l=line: self.text_output.insert(tk.END, l + "\n"))
+                self.after(0, lambda: self.text_output.see(tk.END))
+
+        # Start ping in aparte thread
         threading.Thread(target=worker, daemon=True).start()
+
+
+    def stop_ping(self):
+        if hasattr(self, "pinger") and self.pinger:
+            self.pinger.stop()
+            self.text_output.insert(tk.END, "\nPing gestopt door gebruiker.\n")
+            self.text_output.see(tk.END)
