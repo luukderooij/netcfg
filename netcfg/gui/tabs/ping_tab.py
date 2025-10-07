@@ -9,6 +9,7 @@ class PingTab(ttk.Frame):
         super().__init__(parent, padding=10)
         self._build_ui()
 
+
     def _build_ui(self):
         # Label en entry voor host/IP
         ttk.Label(self, text="Host/IP:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
@@ -44,11 +45,6 @@ class PingTab(ttk.Frame):
         # Maak laatste rij en kolom stretchable
         self.rowconfigure(3, weight=1)
         self.columnconfigure(1, weight=1)
-
-
-
-
-
 
 
     def run_ping(self):
