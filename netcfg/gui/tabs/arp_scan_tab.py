@@ -110,7 +110,7 @@ class ArpScanTab(ttk.Frame):
             def handle_npcap():
                 # Toon melding met vraag
                 msg = (
-                    "Npcap (of een ander pcap-backend) is vereist voor ARP-scanning.\n\n"
+                    "Npcap is vereist voor ARP-scanning.\n\n"
                     "Wil je de Npcap downloadpagina openen?\n\n"
                     f"{scanner.NPCAP_DOWNLOAD_URL}"
                 )
