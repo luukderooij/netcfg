@@ -2,6 +2,45 @@
 
 <!-- version list -->
 
+## v1.6.0 (2025-10-07)
+
+### Bug Fixes
+
+- Add requires-python field to specify Python version requirement
+  ([`4164ff3`](https://github.com/luukderooij/netcfg/commit/4164ff3f8856abc2fe9773b96b4467f03d41ca0d))
+
+- Simplify error message for Npcap requirement in ARP scanning
+  ([`6ca7d05`](https://github.com/luukderooij/netcfg/commit/6ca7d055ae01087275ba7500bff30f926cbb22f1))
+
+- Update script to correctly reference main.py in netcfg folder
+  ([`8e2e046`](https://github.com/luukderooij/netcfg/commit/8e2e046a744aa4aa6b8dc6b3487b70889740a368))
+
+### Features
+
+- Implement Pinger class for enhanced ping functionality and GUI integration
+  ([`da58a2d`](https://github.com/luukderooij/netcfg/commit/da58a2d82227f520b46e1cf5a0b8b459dec05236))
+
+- Moved main.py file to netcfg folder.
+  ([`26a49ac`](https://github.com/luukderooij/netcfg/commit/26a49ac8079cc0f7c2abcd786673b77fc642bd02))
+
+### Refactoring
+
+- Clean up whitespace and formatting in PingTab class
+  ([`d321e70`](https://github.com/luukderooij/netcfg/commit/d321e70158b7f60743e8054a1ce0f9ffc6fb8ce2))
+
+- Improve layout and padding in PingTab UI components
+  ([`4e4842f`](https://github.com/luukderooij/netcfg/commit/4e4842fa307eff6ad9cff7258e35b9d3937febc7))
+
+- Moved files to diffent folders for better structure.
+  ([`56f5805`](https://github.com/luukderooij/netcfg/commit/56f58059eddcb7ec61e8ee01a11f9d6afd18c248))
+
+- Remove unused run_ping and main functions from ping.py
+  ([`789a2db`](https://github.com/luukderooij/netcfg/commit/789a2dbacbe9cda119890bc4f5719b77864982fc))
+
+- Update import statements to simplify module paths
+  ([`64bdc03`](https://github.com/luukderooij/netcfg/commit/64bdc0306da3701c686bccafbe5510dda41f5726))
+
+
 ## v1.5.0 (2025-10-01)
 
 ### Features
