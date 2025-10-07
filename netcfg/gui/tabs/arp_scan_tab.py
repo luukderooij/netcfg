@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
 
-from netcfg.commands.arp_scanner import ArpScanner, NpcapRequiredError
+from commands.arp_scanner import ArpScanner, NpcapRequiredError
 from mac_vendor_lookup import MacLookup, VendorNotFoundError
-from netcfg import settings
+import settings
 
 class ArpScanTab(ttk.Frame):
     def __init__(self, parent):

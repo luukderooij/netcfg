@@ -6,7 +6,7 @@ from typing import List, Dict
 
 from scapy.all import ARP, Ether, srp, conf
 
-from netcfg import settings
+import settings
 
 conf.verb = 0
 

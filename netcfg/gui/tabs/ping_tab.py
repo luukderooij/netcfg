@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
-from netcfg.commands import ping
+from commands import ping
 
 
 class PingTab(ttk.Frame):

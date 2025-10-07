@@ -1,6 +1,6 @@
-from netcfg.gui.main import launch_gui
-import logging
+from gui.main import launch_gui
 
+import logging
 
 if __name__ == "__main__":
     
