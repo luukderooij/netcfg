@@ -49,4 +49,4 @@ if exist %CACHE_FILE% (
 REM Start je applicatie
 echo [INFO] Start applicatie...
 
-python main.py
+python .\netcfg\main.py

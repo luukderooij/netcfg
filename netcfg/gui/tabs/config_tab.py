@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
-from netcfg import core, settings
+import settings
+from commands import core
 
 
 class ConfigTab(ttk.Frame):

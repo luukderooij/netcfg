@@ -6,7 +6,7 @@ from typing import List, Dict
 
 from scapy.all import ARP, Ether, srp, conf
 
-from netcfg import settings
+import settings
 
 conf.verb = 0
 
@@ -79,7 +79,7 @@ class ArpScanner:
                     webbrowser.open(self.NPCAP_DOWNLOAD_URL)
                 except Exception as e:
                     logger.exception("Failed to open webbrowser: %s", e)
-            raise NpcapRequiredError("Npcap (or other pcap backend) is required for ARP scanning.")
+            raise NpcapRequiredError("Npcap is required for ARP scanning.")
         logger.debug("pcap backend is available.")
 
     def scan(self, network_cidr: str = "192.168.1.0/24", timeout: float = 2) -> List[Dict[str, str]]:

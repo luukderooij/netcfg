@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
 
-from netcfg.commands.arp_scanner import ArpScanner, NpcapRequiredError
+from commands.arp_scanner import ArpScanner, NpcapRequiredError
 from mac_vendor_lookup import MacLookup, VendorNotFoundError
-from netcfg import settings
+import settings
 
 class ArpScanTab(ttk.Frame):
     def __init__(self, parent):
@@ -110,7 +110,7 @@ class ArpScanTab(ttk.Frame):
             def handle_npcap():
                 # Toon melding met vraag
                 msg = (
-                    "Npcap (of een ander pcap-backend) is vereist voor ARP-scanning.\n\n"
+                    "Npcap is vereist voor ARP-scanning.\n\n"
                     "Wil je de Npcap downloadpagina openen?\n\n"
                     f"{scanner.NPCAP_DOWNLOAD_URL}"
                 )
