@@ -10,29 +10,46 @@ class PingTab(ttk.Frame):
         self._build_ui()
 
     def _build_ui(self):
-        ttk.Label(self, text="Host/IP:").grid(row=0, column=0, sticky="w")
+        # Label en entry voor host/IP
+        ttk.Label(self, text="Host/IP:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
         self.entry_host = ttk.Entry(self, width=30)
-        self.entry_host.grid(row=0, column=1, sticky="ew", padx=5)
+        self.entry_host.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+        self.entry_host.insert(0, "8.8.8.8")
 
-        ttk.Label(self, text="Aantal (pakketten):").grid(row=1, column=0, sticky="w")
+        # Label en entry voor aantal pings
+        ttk.Label(self, text="Aantal (pakketten):").grid(row=1, column=0, sticky="w", padx=5, pady=5)
         self.entry_count = ttk.Entry(self, width=10)
+        self.entry_count.grid(row=1, column=1, sticky="w", padx=5, pady=5)
         self.entry_count.insert(0, "4")
-        self.entry_count.grid(row=1, column=1, sticky="w", padx=5)
 
+        # Frame voor knoppen en checkbox
+        button_frame = ttk.Frame(self)
+        button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=5, padx=5)
+        button_frame.columnconfigure(0, weight=1)
+        button_frame.columnconfigure(1, weight=1)
+        button_frame.columnconfigure(2, weight=1)
+
+        # Ping uitvoeren knop
+        ttk.Button(button_frame, text="Ping uitvoeren", command=self.run_ping).grid(row=0, column=0, padx=5, sticky="ew")
+        # Checkbox voor infinite ping
+        self.var_infinite = tk.BooleanVar()
+        tk.Checkbutton(button_frame, text="Oneindig pingen (-t)", variable=self.var_infinite).grid(row=0, column=1, padx=5, sticky="w")
+        # Stop knop
+        ttk.Button(button_frame, text="Stop Ping", command=self.stop_ping).grid(row=0, column=2, padx=5, sticky="ew")
+
+        # Text widget voor output
         self.text_output = tk.Text(self, height=15, wrap="word")
-        self.text_output.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=10)
+        self.text_output.grid(row=3, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
 
-        self.rowconfigure(2, weight=1)
+        # Maak laatste rij en kolom stretchable
+        self.rowconfigure(3, weight=1)
         self.columnconfigure(1, weight=1)
 
-        ttk.Button(self, text="Ping uitvoeren", command=self.run_ping).grid(
-            row=3, column=0, columnspan=2, pady=5
-        )
 
-        tk.Button(self, text="Stop", command=self.stop_ping).grid(row=3, column=0, pady=5)
 
-        self.var_infinite = tk.BooleanVar()
-        tk.Checkbutton(self, text="Oneindig pingen (-t)", variable=self.var_infinite).grid(row=4, column=0, pady=5)
+
+
+
 
     def run_ping(self):
         host = self.entry_host.get().strip()
